@@ -8,6 +8,7 @@ from f5_tts.infer.utils_infer import (
 )
 from f5_tts.model import DiT
 from f5_tts.model.utils import seed_everything
+import os
 
 class f5_tts_russian:
     def __init__(self):
@@ -26,8 +27,10 @@ class f5_tts_russian:
         ckpt_path = str(cached_path(self.WEIGHTS_PATH))
         vocab_path = str(cached_path(self.VOCAB_PATH))
         model_cfg = dict(dim=1024, depth=22, heads=16, ff_mult=2, text_dim=512, conv_layers=4)
-        self.model_obj = load_model(DiT, model_cfg, ckpt_path, vocab_file=vocab_path)
+        self.model_obj = load_model(DiT, model_cfg, ckpt_path, vocab_file=vocab_path, device=self.DEVICE)
         
+        os.makedirs('./ruaccent_cache', exist_ok=True)
+        os.environ['RUACCENT_CACHE_DIR'] = './ruaccent_cache'
         self.accentizer = RUAccent()
         self.accentizer.load(
             omograph_model_size='turbo3.1',
@@ -39,6 +42,7 @@ class f5_tts_russian:
     def generate(self, text, ref):
         ref_file, ref_text = preprocess_ref_audio_text(ref[0], ref[1])
         gen_text = self.accentizer.process_all(text) + ' '
+
 
         wav, sr, _ = infer_process(
             ref_file,
