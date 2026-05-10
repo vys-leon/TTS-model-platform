@@ -14,7 +14,7 @@ class f5_tts_russian:
         seed_everything(4442)
         
         self.NAME = "F5_TTS_RUSSIAN"
-        self.DEVICE = 'cpu'
+        self.DEVICE = 'cuda'
         self.WEIGHTS_PATH = 'hf://Misha24-10/F5-TTS_RUSSIAN/F5TTS_v1_Base_v4_winter/model_212000.safetensors'
         self.VOCAB_PATH = 'hf://Misha24-10/F5-TTS_RUSSIAN/F5TTS_v1_Base/vocab.txt'
         self.ACCENT_DICT = {
@@ -26,15 +26,14 @@ class f5_tts_russian:
         ckpt_path = str(cached_path(self.WEIGHTS_PATH))
         vocab_path = str(cached_path(self.VOCAB_PATH))
         model_cfg = dict(dim=1024, depth=22, heads=16, ff_mult=2, text_dim=512, conv_layers=4)
-        self.model_obj = load_model(DiT, model_cfg, ckpt_path, vocab_file=vocab_path, device=self.DEVICE)
+        self.model_obj = load_model(DiT, model_cfg, ckpt_path, vocab_file=vocab_path)
         
         self.accentizer = RUAccent()
         self.accentizer.load(
             omograph_model_size='turbo3.1',
             use_dictionary=True,
             tiny_mode=False,
-            custom_dict=self.ACCENT_DICT,
-            workdir="./ruaccent_models"
+            custom_dict=self.ACCENT_DICT
         )
 
     def generate(self, text, ref):
