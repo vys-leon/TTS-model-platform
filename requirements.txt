@@ -1,0 +1,14 @@
+f5-tts
+soundfile
+ruaccent
+
+streamlit
+
+matplotlib
+numpy
+pandas
+seaborn
+
+python-dotenv
+
+torchvision
