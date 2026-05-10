@@ -14,7 +14,7 @@ class f5_tts_russian:
         seed_everything(4442)
         
         self.NAME = "F5_TTS_RUSSIAN"
-        self.DEVICE = 'cuda'
+        self.DEVICE = 'cpu'
         self.WEIGHTS_PATH = 'hf://Misha24-10/F5-TTS_RUSSIAN/F5TTS_v1_Base_v4_winter/model_212000.safetensors'
         self.VOCAB_PATH = 'hf://Misha24-10/F5-TTS_RUSSIAN/F5TTS_v1_Base/vocab.txt'
         self.ACCENT_DICT = {
